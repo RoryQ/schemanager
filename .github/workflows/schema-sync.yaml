@@ -1,0 +1,43 @@
+name: Schema Sync Check
+on: pull_request
+
+jobs:
+  migrations-equal-schema:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        env:
+          POSTGRES_PASSWORD: hunter11
+        image: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_CONN: postgres://postgres:hunter11@localhost:5432/postgres?sslmode=disable
+    steps:
+      - name: Install pg_dump
+        run: sudo apt-get update && sudo apt-get install postgresql-client
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.18'
+
+      - name: Run Migrations
+        run: >- 
+          go install db/migrate.go;
+          mkdir expected; cd expected;
+          migrate up;
+          migrate dump;
+          cd ..;
+
+      - name: Compare Schema
+        run: >-
+          diff -bur expected/db/schema db/schema
