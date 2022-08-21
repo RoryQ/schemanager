@@ -26,7 +26,7 @@ version number so the descriptive name should not be changed or else the migrati
 #### 2. Test changes locally
 
 Test the schema changes, preferably against a non-persisted instance of the database until the schema is right. You can
-recreate and rerun the migrations freely this way.
+recreate and rerun the migrations using `make migrate` freely this way.
 
 #### 3. `make schema` to save schema
 

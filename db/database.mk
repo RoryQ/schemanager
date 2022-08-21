@@ -1,3 +1,5 @@
+# The following targets are expected to be run from the root Makefile so the paths are relative to the project root.
+# The migrate program expects a DATABASE_CONN environment variable set with the DSN.
 
 .PHONY: migrate-new
 migrate-new:
