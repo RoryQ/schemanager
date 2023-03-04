@@ -2,12 +2,10 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"database/sql"
 	"embed"
 	"errors"
 	"fmt"
-	"github.com/lib/pq"
 	"io/ioutil"
 	"math"
 	"net/url"
@@ -18,6 +16,8 @@ import (
 	"strconv"
 	"strings"
 	"text/tabwriter"
+
+	"github.com/lib/pq"
 
 	"github.com/adlio/schema"
 	"github.com/alecthomas/kong"
@@ -243,9 +243,11 @@ func pgDumpTable(tableName string) (string, error) {
 		cmd.Env = append(os.Environ(), "PGPASSWORD="+password)
 	}
 
-	var out bytes.Buffer
+	var out, errOut strings.Builder
 	cmd.Stdout = &out
+	cmd.Stderr = &errOut
 	if err := cmd.Run(); err != nil {
+		println(errOut.String())
 		return "", err
 	}
 
