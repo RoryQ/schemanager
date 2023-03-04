@@ -12,7 +12,7 @@ for a golang application that uses postgres as the data store.
 - **Sequence number interval of 10**. Allows up to 9 hotfix migrations if production and development databases have diverged.
 - **Migrations must be synced with schema definition**. The DDL (and static DML) representation of the database must match
   the applied migrations in source control. Having both representations in sync helps in understanding the difference
-  between commits. (requires `pg_dump`)
+  between commits. (requires a `pg_dump` binary compatible with the postgres server version)
 - **SQL only migrations**. No extra work needed to support native functionality. Migrations are embedded and the binary
   is copied to the docker image.
 

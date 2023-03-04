@@ -26,8 +26,8 @@ db/README.md: db/migrate.go
 .PHONY: _schema-pg-up
 _schema-pg-up:
 	-@make _schema-pg-down # clear previous
-	@docker run --rm --detach -p 5432 -e POSTGRES_PASSWORD=pwd --name pg-schema postgres
-	@sleep 1
+	@docker run --rm --detach -p 5432 -e POSTGRES_PASSWORD=pwd --name pg-schema postgres:15
+	@sleep 5 # TODO wait until ready
 
 
 .PHONY: _schema-pg-down
